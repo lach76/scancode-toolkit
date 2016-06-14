@@ -291,6 +291,15 @@ ignores_Misc = {
     '/.ssh': 'Default ignore: SSH configuration',
 }
 
+ignores_Compression = {
+    '.zip' : 'Zipped file',
+    '.tar' : 'Tar file',
+    '.tar.gz' : 'Tar and Gzip file',
+    '.bz2' : 'bz2 file',
+    '.tar.bz2' : 'Tar and bz2 file',
+    '.gz' : 'gz file'
+}
+
 
 default_ignores = {}
 
@@ -310,4 +319,5 @@ default_ignores.update(chain(*[d.items() for d in [
     ignores_coverage_and_tests,
     ignores_Misc,
     ignores_Build_scripts,
+    ignores_Compression,
 ]]))

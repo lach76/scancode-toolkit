@@ -294,7 +294,8 @@ def scan(input_path, copyright=True, license=True, package=True,  # @ReservedAss
         summary.append(style('Scanning done.', fg=summary_color, reset=True))
         return '\n'.join(summary)
 
-    ignored = partial(ignore.is_ignored, ignores=ignore.ignores_VCS, unignores={})
+    ignored_dict = dict(ignore.ignores_VCS.items() + ignore.ignores_Compression.items() + ignore.ignores_Linux.items())
+    ignored = partial(ignore.is_ignored, ignores=ignored_dict, unignores={})
     resources = fileutils.resource_iter(abs_input, ignored=ignored, recursive = recursive)
 
     with utils.progressmanager(resources,
