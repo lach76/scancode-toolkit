@@ -297,7 +297,8 @@ ignores_Compression = {
     '.tar.gz' : 'Tar and Gzip file',
     '.bz2' : 'bz2 file',
     '.tar.bz2' : 'Tar and bz2 file',
-    '.gz' : 'gz file'
+    '.gz' : 'gz file',
+    '.xz' : 'xz file'
 }
 
 
