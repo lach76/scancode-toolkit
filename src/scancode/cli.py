@@ -221,6 +221,7 @@ formats = ['json', 'html', 'html-app']
 @click.option('--email', is_flag=True, default=False, help='Scan <input> for emails.')
 @click.option('--url', is_flag=True, default=False, help='Scan <input> for urls.')
 @click.option('-i', '--info', is_flag=True, default=False, help='Scan <input> for files information.')
+@click.option('-r', '--recursive', is_flag=True, default=False, help='Visiting folder recursively.')
 
 @click.option('-f', '--format', is_flag=False, default='json', show_default=True, metavar='<style>',
               help='Set <output_file> format <style> to one of the standard formats: %s or the path to a custom template' % ' or '.join(formats),)
@@ -233,7 +234,7 @@ formats = ['json', 'html', 'html-app']
 @click.option('--version', is_flag=True, is_eager=True, callback=print_version, help='Show the version and exit.')
 
 def scancode(ctx, input, output_file, copyright, license, package,  # @ReservedAssignment
-             email, url, info, format, verbose, quiet, *args, **kwargs):  # @ReservedAssignment
+             email, url, info, format, verbose, quiet, recursive, *args, **kwargs):  # @ReservedAssignment
     """scan the <input> file or directory for origin clues and license and save results to the <output_file>.
 
     The scan results are printed on terminal if <output_file> is not provided.
@@ -245,12 +246,12 @@ def scancode(ctx, input, output_file, copyright, license, package,  # @ReservedA
         license = True  # @ReservedAssignment
         package = True
 
-    results = scan(input, copyright, license, package, email, url, info, verbose, quiet)
+    results = scan(input, copyright, license, package, email, url, info, verbose, quiet, recursive)
     save_results(results, format, input, output_file)
 
 
 def scan(input_path, copyright=True, license=True, package=True,  # @ReservedAssignment
-         email=False, url=False, info=True, verbose=False, quiet=False):  # @ReservedAssignment
+         email=False, url=False, info=True, verbose=False, quiet=False, recursive=True):  # @ReservedAssignment
     """
     Do the scans proper, return results.
     """
@@ -294,7 +295,7 @@ def scan(input_path, copyright=True, license=True, package=True,  # @ReservedAss
         return '\n'.join(summary)
 
     ignored = partial(ignore.is_ignored, ignores=ignore.ignores_VCS, unignores={})
-    resources = fileutils.resource_iter(abs_input, ignored=ignored)
+    resources = fileutils.resource_iter(abs_input, ignored=ignored, recursive = recursive)
 
     with utils.progressmanager(resources,
                                item_show_func=scan_event,

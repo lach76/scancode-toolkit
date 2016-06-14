@@ -247,7 +247,7 @@ def splitext(path):
 ignore_nothing = lambda _: False
 
 
-def walk(location, ignored=ignore_nothing):
+def walk(location, ignored=ignore_nothing, recursive=True):
     """
     Walk location returning the same tuples as os.walk but with a different
     behavior:
@@ -277,7 +277,7 @@ def walk(location, ignored=ignore_nothing):
                         logger.debug('walk: ignored:', loc, ign)
                     continue
                 # special files and symlinks are always ignored
-                if filetype.is_dir(loc):
+                if filetype.is_dir(loc) and recursive:
                     dirs.append(name)
                 elif filetype.is_file(loc):
                     files.append(name)
@@ -312,7 +312,7 @@ def dir_iter(location, ignored=ignore_nothing):
     return resource_iter(location, ignored, with_files=False)
 
 
-def resource_iter(location, ignored=ignore_nothing, with_files=True, with_dirs=True):
+def resource_iter(location, ignored=ignore_nothing, with_files=True, with_dirs=True, recursive=True):
     """
     Return an iterable of resources at `location` recursively.
 
@@ -324,7 +324,7 @@ def resource_iter(location, ignored=ignore_nothing, with_files=True, with_dirs=T
     :return: an iterable of file and directory locations.
     """
     assert  with_dirs or with_files, "One or both of 'with_dirs' and 'with_files' is required"
-    for top, dirs, files in walk(location, ignored):
+    for top, dirs, files in walk(location, ignored, recursive = recursive):
         if with_files:
             for f in files:
                 yield os.path.join(top, f)
