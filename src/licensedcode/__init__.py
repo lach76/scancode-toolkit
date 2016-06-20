@@ -27,7 +27,7 @@ import os
 from os.path import abspath, dirname, join, exists
 
 
-src_dir = abspath(dirname(os.getcwd()))#__file__))
+src_dir = abspath(dirname(__file__))
 data_dir = join(src_dir, 'data')
 licenses_data_dir = join(data_dir, 'licenses')
 rules_data_dir = join(data_dir, 'rules')
